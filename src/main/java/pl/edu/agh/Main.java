@@ -20,6 +20,8 @@ import org.uma.jmetal.solution.DoubleSolution;
 import org.uma.jmetal.solution.PermutationSolution;
 import org.uma.jmetal.util.AlgorithmRunner;
 import org.uma.jmetal.util.JMetalLogger;
+import org.uma.jmetal.util.archive.impl.CrowdingDistanceArchive;
+import org.uma.jmetal.util.archive.impl.NonDominatedSolutionListArchive;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 import org.uma.jmetal.util.fileoutput.SolutionListOutput;
 
@@ -30,15 +32,15 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        DoubleProblem problem;
-        ScatterSearch<DoubleSolution, ScatterSearch.ReferenceSetDefinition, Character.Subset> algorithm;
+        TSP problem;
+        IntegerABYSS algorithm;
         CrossoverOperator<DoubleSolution> crossover;
         MutationOperator<DoubleSolution> mutation;
 //        SelectionOperator<List<PermutationSolution<Integer>>, PermutationSolution<Integer>> selection;
 
         JMetalLogger.logger.info("TSP");
 
-        problem = (DoubleProblem) new TSP("/tsp/kroA100.tsp");
+        problem = new TSP("/tsp/kroA100.tsp");
 
         crossover = new DifferentialEvolutionCrossover() ;
         mutation = new PolynomialMutation();
@@ -52,12 +54,12 @@ public class Main {
 ////                .setImprovementOperator()
 //                .build();
 
-        algorithm = new ScatterSearch<>();
+        algorithm = new IntegerABYSSBuilder(problem, new CrowdingDistanceArchive<>(10)).build();
 
         AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)
                 .execute() ;
 
-        List<DoubleSolution> solution = algorithm.getResult() ;
+        List<PermutationSolution<Integer>> solution = algorithm.getResult() ;
 
         long computingTime = algorithmRunner.getComputingTime() ;
 
