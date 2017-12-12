@@ -30,7 +30,7 @@ public class IntegerABYSSBuilder implements AlgorithmBuilder<IntegerABYSS> {
 
     public IntegerABYSSBuilder(AbstractIntegerPermutationProblem problem, Archive<PermutationSolution<Integer>> archive) {
         this.populationSize = 20;
-        this.maxEvaluations = 60;
+        this.maxEvaluations = 70000;
         this.archiveSize = 100;
         this.refSet1Size = 10;
         this.refSet2Size = 10;

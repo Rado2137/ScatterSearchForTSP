@@ -155,8 +155,15 @@ public class IntegerABYSS extends AbstractScatterSearch<PermutationSolution<Inte
 //            double high = low + (((DoubleProblem)problem).getUpperBound(i) -
 //                    ((DoubleProblem)problem).getLowerBound(i)) / numberOfSubRanges;
 
-            value = randomGenerator.nextInt(0, 99);
-            solution.setVariableValue(i, value);
+//            value = randomGenerator.nextInt(0, 99);
+//            Integer moveVar = solution.getVariableValue(i);
+//            solution.setVariableValue(i, value);
+//            solution.getVariableValue();
+            int i1 = randomGenerator.nextInt(0, 99);
+            int i2 = randomGenerator.nextInt(0, 99);
+            Integer variableValue = solution.getVariableValue(i1);
+            solution.setVariableValue(i1, solution.getVariableValue(i2));
+            solution.setVariableValue(i2, variableValue);
         }
 
         problem.evaluate(solution);
