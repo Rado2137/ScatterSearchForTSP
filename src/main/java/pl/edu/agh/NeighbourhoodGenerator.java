@@ -1,9 +1,6 @@
 package pl.edu.agh;
 
-import org.uma.jmetal.operator.MutationOperator;
-import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.solution.PermutationSolution;
-import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.JMetalException;
 
 import java.util.LinkedList;
@@ -32,17 +29,20 @@ public class NeighbourhoodGenerator<T> {
         int index = 0;
 
         if ((permutationLength != 0) && (permutationLength != 1) && improvementRounds != 1) {
-            while (index <= permutationLength) {
+            while (index < permutationLength) {
 
                 int pos1 = index;
-                int pos2 = index + 1;
+                for (int i = 0; i < permutationLength; i++) {
+                    int pos2 = i;
 
-                if (pos2 < permutationLength) {
-                    PermutationSolution<T> solutionCopy = (PermutationSolution<T>) solution.copy();
-                    T temp = solutionCopy.getVariableValue(pos1);
-                    solutionCopy.setVariableValue(pos1, solutionCopy.getVariableValue(pos2));
-                    solutionCopy.setVariableValue(pos2, temp);
-                    listOfSolutions.add(solutionCopy);
+                    if (pos2 != index) {
+                        PermutationSolution<T> solutionCopy = (PermutationSolution<T>) solution.copy();
+                        T temp = solutionCopy.getVariableValue(pos1);
+                        solutionCopy.setVariableValue(pos1, solutionCopy.getVariableValue(pos2));
+                        solutionCopy.setVariableValue(pos2, temp);
+                        listOfSolutions.add(solutionCopy);
+                    }
+
                 }
 
                 index++;
