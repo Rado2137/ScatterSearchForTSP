@@ -28,21 +28,29 @@ public class IntegerABYSSBuilder implements AlgorithmBuilder<IntegerABYSS> {
     private int maxEvaluations;
     private CrowdingDistanceArchive<PermutationSolution<Integer>> archive;
 
+    //TODO memetic in LocalSearch, differenet results comparison, change parameter only of localSearch
     public IntegerABYSSBuilder(AbstractIntegerPermutationProblem problem, Archive<PermutationSolution<Integer>> archive) {
+        //wlasciwie wszystkie te elementy mozna modyfikowac, dalbym duza ilosc ewaluacji, ale wypisywal tylko np. co 100 rozwiazanie
         this.populationSize = 20;
-        this.maxEvaluations = 70000;
+        this.maxEvaluations = 7000000;
         this.archiveSize = 100;
         this.refSet1Size = 10;
         this.refSet2Size = 10;
         this.numberOfSubranges = 4;
         this.problem = problem;
+        // to zdecydowanie do zabawy
         double crossoverProbability = 0.9;
         this.crossoverOperator = new PMXCrossover(crossoverProbability);
+        // to zdecydowanie do zabawy
         double mutationProbability = 0.5;
         this.mutationOperator = new PermutationSwapMutation<>(mutationProbability);
-        int improvementRounds = 1;
+        // to zdecydowanie do zabawy
+        int improvementRounds = 10;
         this.archive = (CrowdingDistanceArchive<PermutationSolution<Integer>>) archive;
-        this.improvementOperator = new ArchiveMutationLocalSearch<PermutationSolution<Integer>>(improvementRounds, mutationOperator, this.archive, problem);
+        //tutaj sa dwa localSearche, pierwszy wbudowany, a drugi zaimplementowany na wzor jednego searcha z lib JAMES
+        //do porownania oba, chociaz ten neighbourhood spisuje sie slabo
+//        this.improvementOperator = new ArchiveMutationLocalSearch<PermutationSolution<Integer>>(improvementRounds, mutationOperator, this.archive, problem);
+        this.improvementOperator = new MultiNeighbourhoodSearch<PermutationSolution<Integer>>(improvementRounds, this.archive, problem);
     }
 
     @Override
